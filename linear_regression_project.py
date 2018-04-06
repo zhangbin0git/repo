@@ -42,10 +42,10 @@ C = [[1],
      [3]]
 
 #TODO 创建一个 4*4 单位矩阵
-I = [[1,2,3,4],
-     [5,6,7,8],
-     [9,10,11,12],
-     [13,14,15,16]]
+I = [[1,0,0,0],
+     [0,1,0,0],
+     [0,0,1,0],
+     [0,0,0,1]]
 
 
 # ## 1.2 返回矩阵的行数和列数
@@ -95,11 +95,12 @@ get_ipython().run_line_magic('run', '-i -e test.py LinearRegressionTestCase.test
 # TODO 计算矩阵的转置
 def transpose(M):
     # 使用zip()矩阵转置
-    M = zip(* M)
-    M = list(M)
-    for i in range(len(M)):
-        M[i] = list(M[i])
-    return M
+#     M = zip(* M)
+#     M = list(M)
+#     for i in range(len(M)):
+#         M[i] = list(M[i])
+#     return M
+    return [list(col) for col in zip(*M)]
 
 
 # In[8]:
@@ -111,7 +112,7 @@ get_ipython().run_line_magic('run', '-i -e test.py LinearRegressionTestCase.test
 
 # ## 1.5 计算矩阵乘法 AB
 
-# In[9]:
+# In[29]:
 
 
 # TODO 计算矩阵乘法 AB，如果无法相乘则raise ValueError
@@ -133,11 +134,10 @@ def matxMultiply(A, B):
         return MID
     else:
         raise ValueError
-matxMultiply(B ,I)
     
 
 
-# In[10]:
+# In[30]:
 
 
 # 运行以下代码测试你的 matxMultiply 函数
@@ -171,7 +171,7 @@ get_ipython().run_line_magic('run', '-i -e test.py LinearRegressionTestCase.test
 #     ...    & ... & ... & ...& ...\\
 #     a_{n1}    & a_{n2} & ... & a_{nn} & b_{n} \end{bmatrix}$
 
-# In[47]:
+# In[31]:
 
 
 # TODO 构造增广矩阵，假设A，b行数相同
@@ -184,7 +184,7 @@ def augmentMatrix(A, b):
     return Ab
 
 
-# In[48]:
+# In[32]:
 
 
 # 运行以下代码测试你的 augmentMatrix 函数
@@ -316,7 +316,7 @@ get_ipython().run_line_magic('run', '-i -e test.py LinearRegressionTestCase.test
 
 # #### 以下开始你的尝试吧!
 
-# In[22]:
+# In[19]:
 
 
 # 不要修改这里！
@@ -341,12 +341,12 @@ printInMatrixFormat(Ab,padding=3,truncating=0)
 # $ Ab = \begin{bmatrix}
 #     1 & \frac{5}{7} & \frac{3}{7} & \frac{1}{7} \\
 #     0 & -\frac{3}{7} & \frac{57}{7} & \frac{12}{7} \\
-#     0 & -\frac{24}{7} & -\frac{48}{7} & \frac{5}{7} \end{bmatrix}$
+#     0 & -\frac{24}{7} & -\frac{69}{7} & \frac{5}{7} \end{bmatrix}$
 # 
 # $ --> \begin{bmatrix}
-#     1 & 0 & 14 & 3 \\
-#     0 & 1 & -19 & -4 \\
-#     0 & 0 & -75 & -13 \end{bmatrix}$
+#     1 & 0 & -\frac{13}{8} & \frac{7}{24} \\
+#     0 & 1 & \frac{23}{8} & -\frac{5}{24} \\
+#     0 & 0 & \frac{75}{8} &\frac{13}{8} \end{bmatrix}$
 #     
 # $ --> \begin{bmatrix}
 #     1 & 0 & 0 & \frac{43}{75} \\
@@ -355,7 +355,7 @@ printInMatrixFormat(Ab,padding=3,truncating=0)
 #     
 # $...$
 
-# In[43]:
+# In[20]:
 
 
 # 不要修改这里！
@@ -377,14 +377,14 @@ printInMatrixFormat(Ab,padding=3,truncating=0)
 # 
 # 
 # $ Ab = \begin{bmatrix}
-#     1 & -6 & 8 & -1 \\
-#     0 & -65 & 85 & -9 \\
-#     0 & -52 & 68 & -8 \end{bmatrix}$
+#     1 & \frac{1}{2} & -\frac{1}{2} & -\frac{1}{10}\\
+#      0 & \frac{13}{2}  & -\frac{17}{2}  & \frac{9}{10}  \\
+#      0 & \frac{13}{2}  & -\frac{17}{2}  & \frac{1}{10} \end{bmatrix}$
 # 
 # $ --> \begin{bmatrix}
 #     1 &0 & \frac{2}{13} & -\frac{11}{65} \\
 #     0 & 1 & -\frac{17}{13} & \frac{9}{65} \\
-#     0 & 0 & 0 & \frac{10}{65} \end{bmatrix}$
+#     0 & 0 & 0 & -\frac{4}{5} \end{bmatrix}$
 #     
 # $ --> \begin{bmatrix}
 #     1 & 0 & \frac{2}{13} &  -\frac{11}{65} \\
@@ -395,7 +395,7 @@ printInMatrixFormat(Ab,padding=3,truncating=0)
 
 # ### 2.3.3 实现 Gaussian Jordan 消元法
 
-# In[194]:
+# In[21]:
 
 
 # TODO 实现 Gaussain Jordan 方法求解 Ax = b
@@ -411,7 +411,6 @@ printInMatrixFormat(Ab,padding=3,truncating=0)
     返回None，如果 A，b 高度不同
     返回None，如果 A 为奇异矩阵
 """
-import numpy as np
 def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
     """        
     A: 方阵 
@@ -455,14 +454,10 @@ def gj_Solve(A, b, decPts=4, epsilon = 1.0e-16):
         result1.append([rt[-1]])
     # 四舍五入结果
     matxRound(result1, decPts)
-#     print(result)
-#     GG=np.linalg.inv(A)
-#     result = matxMultiply(GG, b)
-#     matxRound(result, decPts)
     return result1
 
 
-# In[195]:
+# In[22]:
 
 
 # 运行以下代码测试你的 gj_Solve 函数
@@ -497,7 +492,7 @@ get_ipython().run_line_magic('run', '-i -e test.py LinearRegressionTestCase.test
 
 # ## 3.1 随机生成样本点
 
-# In[172]:
+# In[23]:
 
 
 # 不要修改这里！
@@ -522,7 +517,7 @@ plt.show()
 # 
 # ### 3.2.1 猜测一条直线
 
-# In[173]:
+# In[24]:
 
 
 #TODO 请选择最适合的直线 y = mx + b
@@ -550,7 +545,7 @@ plt.show()
 # MSE = \frac{1}{n}\sum_{i=1}^{n}{(y_i - mx_i - b)^2}
 # $$
 
-# In[174]:
+# In[25]:
 
 
 # TODO 实现以下函数并输出所选直线的MSE
@@ -695,7 +690,7 @@ print(calculateMSE(X,Y,m1,b1))
 # 
 # 在3.3 中，我们知道线性回归问题等价于求解 $X^TXh = X^TY$ (如果你选择不做3.3，就勇敢的相信吧，哈哈)
 
-# In[206]:
+# In[26]:
 
 
 # TODO 实现线性回归
@@ -704,7 +699,6 @@ print(calculateMSE(X,Y,m1,b1))
 参数：X, Y 存储着一一对应的横坐标与纵坐标的两个一维数组
 返回：m，b 浮点数
 '''
-import numpy as np
 def linearRegression(X,Y):
     # 不能直接用逆矩阵计算，不是所有矩阵都有逆矩阵,成为非奇异矩阵。才可以计算
     # 构建公式中的矩阵
@@ -714,10 +708,7 @@ def linearRegression(X,Y):
     A = matxMultiply(XT, X)
     b = matxMultiply(XT, Y)
     # 返回X的逆矩阵
-    X_1 = np.linalg.inv(A)
-#     h = matxMultiply(X_1, b)
     h1 = gj_Solve(A, b)
-#     print(h)
     return h1[0][0], h1[1][0]
 
 m2,b2 = linearRegression(X,Y)
@@ -729,7 +720,7 @@ print(m2,b2)
 # 你求得的回归结果是什么？
 # 请使用运行以下代码将它画出来。
 
-# In[207]:
+# In[27]:
 
 
 # 请不要修改下面的代码
@@ -747,7 +738,7 @@ plt.show()
 
 # 你求得的回归结果对当前数据集的MSE是多少？
 
-# In[208]:
+# In[28]:
 
 
 print(calculateMSE(X,Y,m2,b2))
